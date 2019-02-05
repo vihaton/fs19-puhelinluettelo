@@ -1,0 +1,30 @@
+{
+  "name": "fs19-puhelinluettelo",
+  "version": "1.0.0",
+  "description": "fs19 osa3",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "watch": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vihaton/fs19-puhelinluettelo.git"
+  },
+  "keywords": [
+    "fullstack"
+  ],
+  "author": "Vili Hätönen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vihaton/fs19-puhelinluettelo/issues"
+  },
+  "homepage": "https://github.com/vihaton/fs19-puhelinluettelo#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
