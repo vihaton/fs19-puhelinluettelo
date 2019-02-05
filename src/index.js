@@ -4,12 +4,16 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
 morgan.token('person', function getPerson (req) {
+    str = JSON.stringify(req.body)
+    if (str === "{}") {
+        return ""
+    }
     return JSON.stringify(req.body)
   })
   
 
 app.use(bodyParser.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
 
 let persons = [
       {
@@ -65,8 +69,6 @@ app.get('/api/persons/:id', (request, response) => {
     response.status(204).end();
   });
 
-  app.use(morgan(':method :url :response-time :person'))
-
   app.post('/api/persons', (request, response) => {
     const body = request.body
 
@@ -100,8 +102,6 @@ const generateId = () => {
 
     return rid
 }
-
-app.use(morgan("tiny"))
 
 app.get("/info", (req, res) => {
     res.send(`<div>
