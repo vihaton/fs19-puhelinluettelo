@@ -73,12 +73,6 @@ app.post('/api/persons', (request, response, next) => {
         })
     } 
 
-    // res = Person.findById(request.params.id).catch(error => next(error))
-    // if (res) {
-    //     return response.status(400).json({
-    //         error: "name must be unique"
-    // })}
-
     const person = new Person({
         name: body.name,
         number: body.number,
