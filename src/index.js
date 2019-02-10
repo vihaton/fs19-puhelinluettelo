@@ -22,6 +22,8 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :person'))
 
+//--- get ---
+
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!!</h1>')
 })
@@ -44,6 +46,8 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
+//--- post, delete, put ---
+
 app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndRemove(request.params.id)
       .then(result => {
@@ -65,7 +69,7 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({
             error: "number missing"
         })
-    } else if (persons.find(p => p.name === body.name)) {
+    } else if (Person.findById(request.params.id)[0]) {
         return response.status(400).json({
             error: "name must be unique"
     })}
@@ -81,6 +85,24 @@ app.post('/api/persons', (request, response) => {
     })
 
 })
+
+app.put("/api/persons/:id", (request, response, next) => {
+    console.log('put with id', request.params.id);
+    const body = request.body
+
+    const person = {
+      name: body.name,
+      number: body.number,
+    }
+  
+    Person.findByIdAndUpdate(request.params.id, person, { new: true })
+      .then(updatedPerson => {
+          console.log('updated person:', updatedPerson);
+          
+        response.json(updatedPerson.toJSON())
+      })
+      .catch(error => next(error))
+  })
 
 const generateId = () => {
     rid = Math.ceil(Math.random() * 666000)
@@ -105,7 +127,7 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-    console.error(error.message)
+    console.error("ERROR HANDLER:", error.message)
 
     if (error.name === 'CastError' && error.kind == 'ObjectId') {
         return response.status(400).send({ error: 'malformatted id' })
