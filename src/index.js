@@ -60,8 +60,8 @@ app.delete('/api/persons/:id', (request, response, next) => {
       .catch(error => next(error))
 });
 
-app.post('/api/persons', (request, response) => {
-    const body = request.body
+app.post('/api/persons', (request, response, next) => {
+    const body = request.body    
 
     if (body.name === undefined) {
         return response.status(400).json({ 
@@ -71,10 +71,13 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({
             error: "number missing"
         })
-    } else if (Person.findById(request.params.id)[0]) {
-        return response.status(400).json({
-            error: "name must be unique"
-    })}
+    } 
+
+    // res = Person.findById(request.params.id).catch(error => next(error))
+    // if (res) {
+    //     return response.status(400).json({
+    //         error: "name must be unique"
+    // })}
 
     const person = new Person({
         name: body.name,
@@ -84,7 +87,7 @@ app.post('/api/persons', (request, response) => {
 
     person.save().then(savedPerson => {
         response.json(savedPerson.toJSON())
-    })
+    }).catch(error => next(error))
 
 })
 
