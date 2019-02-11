@@ -12,7 +12,7 @@ const password = process.argv[2]
 const url = `mongodb+srv://xvixvi:${password}@cluster0-guglj.mongodb.net/test?retryWrites=true`
 
 mongoose.connect(url, { useNewUrlParser: true }).catch(error => {
-    console.log('failed to connect with error', error);    
+  console.log('failed to connect with error', error)
 })
 
 const personSchema = new mongoose.Schema({
@@ -24,16 +24,15 @@ const personSchema = new mongoose.Schema({
 const Person = mongoose.model('Person', personSchema)
 
 if (process.argv.length<5) {
-    console.log("puhelinluettelo:");
+  console.log('puhelinluettelo:')
 
-    Person.find({}).then(result => {
-        result.forEach(person => {
-            console.log(person.name, person.number);
-            
-        })
-        mongoose.connection.close()
-        process.exit(1)
+  Person.find({}).then(result => {
+    result.forEach(person => {
+      console.log(person.name, person.number)
     })
+    mongoose.connection.close()
+    process.exit(1)
+  })
 }
 
 const person = new Person({
@@ -42,10 +41,10 @@ const person = new Person({
   id: Math.ceil(Math.random() * 666000)
 })
 
-person.save().then(response => {
-  console.log(`lisätään ${person.name} numero ${person.number} luetteloon`);
-  
-  mongoose.connection.close();
+person.save().then(() => {
+  console.log(`lisätään ${person.name} numero ${person.number} luetteloon`)
+
+  mongoose.connection.close()
 }).catch(error => {
-    console.log(`ERROR @ saving person: ${error}`);
+  console.log(`ERROR @ saving person: ${error}`)
 })
